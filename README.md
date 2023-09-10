@@ -10,7 +10,7 @@ _This package is currently a work in progress._
 npm install inertiajs-table
 ```
 
-See the [doccumentation](https://mdshack.github.io/inertiajs-table/) to get started.
+See the [documentation](https://mdshack.github.io/inertiajs-table/) to get started.
 
 ## Todo
 
