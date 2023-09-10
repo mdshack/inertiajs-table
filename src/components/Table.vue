@@ -22,11 +22,13 @@ import Filter, { ActiveFilter, FilterOption } from '../types/Filter'
 // Utils
 import { getQueryFilters, flattenActiveQuery, getUnrelatedQuery } from '../utils/query'
 
+defineEmits(['row-clicked'])
+
 const props = withDefaults(defineProps<{
     route: string // Route this table is displayed on
     paginatedResponse: PaginatedResponse // The Laravel paginator response
     columns: Column[] // The columns that will be displayed on the table
-    rowClickable: boolean // If the rows are clickable
+    rowClickable?: boolean // If the rows are clickable
     filters?: Filter[] // Available filters for this table
 }>(), {
     rowClickable: false,
@@ -62,17 +64,17 @@ watch(activeFilters, () => {
 </script>
 
 <template>
-    <div class="inertia-table">
-        <div class="inertia-table__header">
-            <h3 class="inertia-table__header__title">
+    <div class="inertiajs-table">
+        <div class="inertiajs-table__header">
+            <h3 class="inertiajs-table__header__title">
                 <slot name="name"/>
             </h3>
 
-            <div class="inertia-table__header__actions">
+            <div class="inertiajs-table__header__actions">
                 <div
                     v-for="filter in filters"
                     :key="filter.property"
-                    class="inertia-table__header__actions__filter">
+                    class="inertiajs-table__header__actions__filter">
                     <!-- Text -->
                     <TextInput
                         v-if="filter.type === 'text'"
@@ -82,14 +84,14 @@ watch(activeFilters, () => {
 
                     <!-- Select -->
                     <template v-else-if="filter.type === 'select'">
-                        <span class="inertia-table__header__actions__filter__name">{{ filter.name }}:</span>
+                        <span class="inertiajs-table__header__actions__filter__name">{{ filter.name }}:</span>
                         <Listbox
                             v-model="activeFilters[filter.property]"
                             as="div"
                             class="relative"
                             multiple>
-                            <ListboxButton class="inertia-table__header__actions__filter__select">
-                                <div class="inertia-table__header__actions__filter__select__button-contents">
+                            <ListboxButton class="inertiajs-table__header__actions__filter__select">
+                                <div class="inertiajs-table__header__actions__filter__select__button-contents">
                                     <template v-if="activeFilters[filter.property] && Array.isArray(activeFilters[filter.property])">
                                         {{ (<FilterOption[]>activeFilters[filter.property]).length ? (<FilterOption[]>activeFilters[filter.property]).map((f) => f.name)?.join(", ") : "All" }}
                                     </template>
@@ -97,16 +99,16 @@ watch(activeFilters, () => {
                                         All
                                     </template>
                                 </div>
-                                <ChevronDownIcon class="inertia-table__header__actions__filter__select__button-chevron"/>
+                                <ChevronDownIcon class="inertiajs-table__header__actions__filter__select__button-chevron"/>
                             </ListboxButton>
-                            <ListboxOptions class="inertia-table__header__actions__filter__select__options">
+                            <ListboxOptions class="inertiajs-table__header__actions__filter__select__options">
                                 <ListboxOption
                                     v-for="option in filter.options"
                                     :key="option.value"
                                     :value="option"
                                     v-slot="{ selected }"
-                                    class="inertia-table__header__actions__filter__select__options__option">
-                                    <div class="inertia-table__header__actions__filter__select__options__option__check-wrapper">
+                                    class="inertiajs-table__header__actions__filter__select__options__option">
+                                    <div class="inertiajs-table__header__actions__filter__select__options__option__check-wrapper">
                                         <CheckIcon v-if="selected"/>
                                     </div>
                                     {{ option.name }}
@@ -121,14 +123,14 @@ watch(activeFilters, () => {
             </div>
         </div>
 
-        <table class="inertia-table__table">
-            <tr class="inertia-table__table__header-row">
+        <table class="inertiajs-table__table">
+            <tr class="inertiajs-table__table__header-row">
                 <th
                     v-for="(column, i) in columns"
                     :key="column.name"
-                    :class="['inertia-table__table__header-row__cell', {
-                        'inertia-table__table__pad-left': i === 0,
-                        'inertia-table__table__pad-right': i === (columns.length-1)
+                    :class="['inertiajs-table__table__header-row__cell', {
+                        'inertiajs-table__table__pad-left': i === 0,
+                        'inertiajs-table__table__pad-right': i === (columns.length-1)
                     }]">
                     {{ column.name }}
                 </th>
@@ -136,37 +138,37 @@ watch(activeFilters, () => {
             <tr
                 v-for="(row, rowIndex) in paginatedResponse.data"
                 :key="`row-${rowIndex}`"
-                :class="['inertia-table__table__content-row', {'inertia-table__table__content-row--clickable': rowClickable}]"
+                :class="['inertiajs-table__table__content-row', {'inertiajs-table__table__content-row--clickable': rowClickable}]"
                 @click="rowClickable && $emit('row-click', row)">
                 <td
                     v-for="(column, columnIndex) in columns"
                     :key="`row-${rowIndex}-column-${columnIndex}`"
                     :class="['py-3', {
-                        'inertia-table__table__pad-left': columnIndex === 0,
-                        'inertia-table__table__pad-right': columnIndex === (columns.length-1)
+                        'inertiajs-table__table__pad-left': columnIndex === 0,
+                        'inertiajs-table__table__pad-right': columnIndex === (columns.length-1)
                     }]">
                     <slot :name="`column-${column.property}`" :row="row"/>
                 </td>
             </tr>
-            <tr v-if="!paginatedResponse.data.length" class="inertia-table__fill">
+            <tr v-if="!paginatedResponse.data.length" class="inertiajs-table__fill">
                 <td colspan="100%">
                     <slot name="empty-state"/>
                 </td>
             </tr>
         </table>
 
-        <div class="inertia-table__footer">
-            <div class="inertia-table__footer__paginator-meta">
-                Showing records <span class="inertia-table__bold">{{ paginatedResponse.from ?? 0 }} - {{paginatedResponse.to ?? 0}}</span> of <span class="inertia-table__bold">{{paginatedResponse.total}}</span>.
+        <div class="inertiajs-table__footer">
+            <div class="inertiajs-table__footer__paginator-meta">
+                Showing records <span class="inertiajs-table__bold">{{ paginatedResponse.from ?? 0 }} - {{paginatedResponse.to ?? 0}}</span> of <span class="inertiajs-table__bold">{{paginatedResponse.total}}</span>.
             </div>
 
-            <div class="inertia-table__footer__paginator-navigation">
+            <div class="inertiajs-table__footer__paginator-navigation">
                 <Link
                     v-for="paginationButton in paginatedResponse.links"
                     :key="paginationButton.label"
-                    :class="['inertia-table__footer__paginator-navigation__button', !paginationButton.url ? 'inertia-table__hidden' : '', paginationButton.active
-                        ? 'inertia-table__footer__paginator-navigation__button--active'
-                        : 'inertia-table__footer__paginator-navigation__button--inactive']"
+                    :class="['inertiajs-table__footer__paginator-navigation__button', !paginationButton.url ? 'inertiajs-table__hidden' : '', paginationButton.active
+                        ? 'inertiajs-table__footer__paginator-navigation__button--active'
+                        : 'inertiajs-table__footer__paginator-navigation__button--inactive']"
                     :href="paginationButton.url ?? '#'"
                     :preserve-state="true">
                     <template v-if="paginationButton.label.endsWith('Previous')">
@@ -185,28 +187,28 @@ watch(activeFilters, () => {
 </template>
 
 <style>
-.inertia-table__fill {
+.inertiajs-table__fill {
     width: 100%;
     height: 100%;
 }
 
-.inertia-table__bold {
+.inertiajs-table__bold {
     font-weight: 700; 
     letter-spacing: 0.05em; 
 }
 
-.inertia-table__hidden {
+.inertiajs-table__hidden {
     display: none;
 }
 
-.inertia-table {
+.inertiajs-table {
     overflow: hidden; 
     border-radius: 0.5rem; 
     border-width: 1px; 
     background-color: #ffffff; 
 }
 
-.inertia-table__header {
+.inertiajs-table__header {
     display: flex; 
     padding-top: 0.5rem;
     padding-bottom: 0.5rem; 
@@ -216,37 +218,37 @@ watch(activeFilters, () => {
     align-items: center; 
 }
 
-.inertia-table__header__title {
+.inertiajs-table__header__title {
     padding-top: 0.5rem;
     padding-bottom: 0.5rem; 
     font-weight: 700; 
 }
 
-.inertia-table__header__actions {
+.inertiajs-table__header__actions {
     display: flex; 
     margin-left: 1.5rem; 
     align-items: center; 
 }
 
-.inertia-table__header__actions > * {
+.inertiajs-table__header__actions > * {
     margin-left: 1.5rem; 
 }
 
-.inertia-table__header__actions__filter {
+.inertiajs-table__header__actions__filter {
     display: flex; 
     align-items: center; 
 }
 
-.inertia-table__header__actions__filter:first-of-type {
+.inertiajs-table__header__actions__filter:first-of-type {
     margin-left: 0; 
 }
 
-.inertia-table__header__actions__filter__name {
+.inertiajs-table__header__actions__filter__name {
     margin-right: 0.5rem; 
     color: #4B5563; 
 }
 
-.inertia-table__header__actions__filter__select {
+.inertiajs-table__header__actions__filter__select {
     display: flex; 
     padding: 0.5rem; 
     align-items: center; 
@@ -255,23 +257,23 @@ watch(activeFilters, () => {
     background-color: #F3F4F6; 
 }
 
-.inertia-table__header__actions__filter__select:hover {
+.inertiajs-table__header__actions__filter__select:hover {
     background-color: #E5E7EB; 
 }
 
-.inertia-table__header__actions__filter__select__button-contents {
+.inertiajs-table__header__actions__filter__select__button-contents {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap; 
     max-width: 100px;
 }
 
-.inertia-table__header__actions__filter__select__button-chevron {
+.inertiajs-table__header__actions__filter__select__button-chevron {
     margin-left: 0.25rem; 
     width: 1.25rem; 
 }
 
-.inertia-table__header__actions__filter__select__options {
+.inertiajs-table__header__actions__filter__select__options {
     display: flex; 
     overflow: hidden; 
     position: absolute; 
@@ -292,7 +294,7 @@ watch(activeFilters, () => {
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); 
 }
 
-.inertia-table__header__actions__filter__select__options__option {
+.inertiajs-table__header__actions__filter__select__options__option {
     display: flex; 
     padding-top: 0.25rem;
     padding-bottom: 0.25rem; 
@@ -302,13 +304,13 @@ watch(activeFilters, () => {
     cursor: pointer; 
 }
 
-.inertia-table__header__actions__filter__select__options__option:hover {
+.inertiajs-table__header__actions__filter__select__options__option:hover {
     color: #ffffff; 
     background-color: #F3F4F6; 
     background-color: #6366F1; 
 }
 
-.inertia-table__header__actions__filter__select__options__option__check-wrapper {
+.inertiajs-table__header__actions__filter__select__options__option__check-wrapper {
     padding: 0.25rem; 
     margin-right: 0.5rem; 
     border-radius: 0.25rem; 
@@ -318,22 +320,22 @@ watch(activeFilters, () => {
     background-color: #F3F4F6; 
 }
 
-.inertia-table__table {
+.inertiajs-table__table {
     border-bottom-width: 1px; 
     border-color: #D1D5DB; 
     width: 100%; 
     text-align: left; 
 }
 
-.inertia-table__table__pad-left {
+.inertiajs-table__table__pad-left {
     padding-left: 1.5rem; 
 }
 
-.inertia-table__table__pad-right {
+.inertiajs-table__table__pad-right {
     padding-right: 1.5rem; 
 }
 
-.inertia-table__table__header-row {
+.inertiajs-table__table__header-row {
     border-color: #D1D5DB; 
     font-size: 0.875rem;
     line-height: 1.25rem; 
@@ -341,21 +343,21 @@ watch(activeFilters, () => {
     background-color: #F3F4F6; 
 }
 
-.inertia-table__table__header-row__cell {
+.inertiajs-table__table__header-row__cell {
     padding-top: 0.5rem;
     padding-bottom: 0.5rem; 
     font-weight: 600; 
 }
 
-.inertia-table__table__content-row--clickable {
+.inertiajs-table__table__content-row--clickable {
     cursor: pointer; 
 }
 
-.inertia-table__table__content-row--clickable:hover {
+.inertiajs-table__table__content-row--clickable:hover {
     background-color: #F9FAFB; 
 }
 
-.inertia-table__footer {
+.inertiajs-table__footer {
     display: flex; 
     padding-top: 1rem;
     padding-bottom: 1rem; 
@@ -365,23 +367,23 @@ watch(activeFilters, () => {
     align-items: center; 
 }
 
-.inertia-table__footer__paginator-meta {
+.inertiajs-table__footer__paginator-meta {
     font-size: 0.875rem;
     line-height: 1.25rem; 
     color: #4B5563; 
 }
 
-.inertia-table__footer__paginator-navigation {
+.inertiajs-table__footer__paginator-navigation {
     display: flex; 
     margin-left: 0.5rem; 
     align-items: center; 
 }
 
-.inertia-table__footer__paginator-navigation > * {
+.inertiajs-table__footer__paginator-navigation > * {
     margin-left: 0.5rem; 
 }
 
-.inertia-table__footer__paginator-navigation__button {
+.inertiajs-table__footer__paginator-navigation__button {
     padding-top: 0.25rem;
     padding-bottom: 0.25rem; 
     padding-left: 0.5rem;
@@ -392,21 +394,21 @@ watch(activeFilters, () => {
     transition-duration: 300ms; 
 }
 
-.inertia-table__footer__paginator-navigation__button:first-of-type {
+.inertiajs-table__footer__paginator-navigation__button:first-of-type {
     margin-left: 0;
 }
 
-.inertia-table__footer__paginator-navigation__button:hover {
+.inertiajs-table__footer__paginator-navigation__button:hover {
     color: #ffffff; 
     background-color: #6366F1; 
 }
 
-.inertia-table__footer__paginator-navigation__button--active {
+.inertiajs-table__footer__paginator-navigation__button--active {
     color: #ffffff; 
     background-color: #6366F1; 
 }
 
-.inertia-table__footer__paginator-navigation__button--inactive {
+.inertiajs-table__footer__paginator-navigation__button--inactive {
     color: #374151; 
 }
 </style>

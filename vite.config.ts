@@ -7,9 +7,9 @@ export default defineConfig({
     build: {
         lib: {
             entry: 'src/main.ts',
-            name: 'inertia-table',
+            name: 'inertiajs-table',
             formats: ['es'], // adding 'umd' requires globals set to every external module
-            fileName: (format) => `inertia-table.${format}.js`,
+            fileName: (format) => `inertiajs-table.${format}.js`,
         },
         rollupOptions: {
             // external modules won't be bundled into your library
