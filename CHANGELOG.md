@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/mdshack/inertiajs-table/compare/v1.0.0...v1.0.1) (2023-09-10)
+
+
+### Bug Fixes
+
+* trigger publish ([b4d68d4](https://github.com/mdshack/inertiajs-table/commit/b4d68d48b1604818aac8fc0bbd6ed7dc0bb89acd))
+
 ## 1.0.0 (2023-09-10)
 
 
