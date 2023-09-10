@@ -11,3 +11,9 @@ npm install inertiajs-table
 ```
 
 See the [doccumentation](https://mdshack.github.io/inertiajs-table/) to get started.
+
+## Todo
+
+- Add better docs + examples
+- Add testing
+- Add sorting functionality
