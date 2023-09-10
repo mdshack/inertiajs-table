@@ -1,6 +1,5 @@
 {
   "name": "inertiajs-table",
-  "private": true,
   "version": "1.0.0",
   "type": "module",
   "main": "./dist/inertiajs-table.es.js",
