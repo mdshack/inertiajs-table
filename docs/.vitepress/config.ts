@@ -4,8 +4,8 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   title: "inertiajs-table",
   description: "Inertia Table documentation",
+  base: "/inertiajs-table/",
   themeConfig: {
-    // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: 'Home', link: '/' },
       // { text: 'Examples', link: '/markdown-examples' }
