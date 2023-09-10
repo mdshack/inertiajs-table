@@ -23,9 +23,17 @@ defineExpose({ focus: () => input.value.focus() });
 
 <template>
     <input
-        class="border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+        class="inertiajs-table__text-input"
         :value="modelValue"
         @input="$emit('update:modelValue', $event.target.value)"
         ref="input"
     />
 </template>
+
+<style scoped>
+.inertiajs-table__text-input {
+    border-radius: 0.375rem; 
+    border-color: #E5E7EB; 
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); 
+}
+</style>
