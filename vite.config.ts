@@ -5,7 +5,6 @@ import vue from '@vitejs/plugin-vue'
 export default defineConfig({
     plugins: [vue()], // to process SFC
     build: {
-        minify:false,
         lib: {
             entry: 'src/main.ts',
             name: 'inertiajs-table',
