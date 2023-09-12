@@ -2,7 +2,7 @@
 
 These are the props available on the table
 
-## route
+## uri
 
 required: **yes**
 
@@ -13,7 +13,7 @@ The route where the page is rendered. Inertia will return this route if you call
 ### Example
 
 ```vue
-<Table :route="route('users.edit')">
+<Table :uri="route('users.edit')">
 ```
 
 ## paginatedResponse

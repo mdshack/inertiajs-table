@@ -25,7 +25,7 @@ import { getQueryFilters, flattenActiveQuery, getUnrelatedQuery } from '../utils
 defineEmits(['row-clicked'])
 
 const props = withDefaults(defineProps<{
-    route: string // Route this table is displayed on
+    uri: string // Route this table is displayed on
     paginatedResponse: PaginatedResponse // The Laravel paginator response
     columns: Column[] // The columns that will be displayed on the table
     rowClickable?: boolean // If the rows are clickable
@@ -52,8 +52,8 @@ watch(activeFilters, () => {
         }
     }
 
-    if(props.route !== '#') {
-        router.get(props.route, formattedFilters, {
+    if(props.uri !== '#') {
+        router.get(props.uri, formattedFilters, {
             preserveState: true,
             preserveScroll: true,
             replace: true,
