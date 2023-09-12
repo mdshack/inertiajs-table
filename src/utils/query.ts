@@ -22,7 +22,6 @@ export function getQueryFilters(filters: Filter[]) : FilterObject {
                 activeFilters[key].push(foundFilter.options.find(({value: v}) => v === value))
             }
         } else {
-            console.log(activeFilters)
             if(filters.find((filter: Filter) => filter.property === key)) {
                 activeFilters[key] = value
             }
