@@ -22,7 +22,7 @@ import Filter, { ActiveFilter, FilterOption } from '../types/Filter'
 // Utils
 import { getQueryFilters, flattenActiveQuery, getUnrelatedQuery } from '../utils/query'
 
-defineEmits(['row-clicked'])
+defineEmits(['row-click'])
 
 const props = withDefaults(defineProps<{
     uri: string // Route this table is displayed on
