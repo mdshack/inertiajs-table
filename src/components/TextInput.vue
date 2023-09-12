@@ -8,7 +8,7 @@ defineProps({
     },
 });
 
-defineEmits(['update:modelValue']);
+defineEmits([ 'update:modelValue' ]);
 
 const input = ref(null);
 
