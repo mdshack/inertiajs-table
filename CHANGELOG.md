@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.3](https://github.com/mdshack/inertiajs-table/compare/v1.0.2...v1.0.3) (2023-09-12)
+
+
+### Bug Fixes
+
+* minify dist ([6b37f19](https://github.com/mdshack/inertiajs-table/commit/6b37f191c6293e2dedd0b626c00dfc8a6552c476))
+* row-clicked -&gt; row-click ([be25d1c](https://github.com/mdshack/inertiajs-table/commit/be25d1c735b371a994e3b55d2c695f046d92218a))
+
 ## [1.0.2](https://github.com/mdshack/inertiajs-table/compare/v1.0.1...v1.0.2) (2023-09-12)
 
 
