@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/mdshack/inertiajs-table/compare/v1.0.1...v1.0.2) (2023-09-12)
+
+
+### Bug Fixes
+
+* test release ([39a3e14](https://github.com/mdshack/inertiajs-table/commit/39a3e141be68e6bd40af0f3bff74e5f2e9c8153e))
+
 ## [1.0.1](https://github.com/mdshack/inertiajs-table/compare/v1.0.0...v1.0.1) (2023-09-10)
 
 
